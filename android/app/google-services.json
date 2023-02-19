@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "932424518829",
+    "project_id": "tkodkonus",
+    "storage_bucket": "tkodkonus.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:932424518829:android:55f6c06209e276850c8a24",
+        "android_client_info": {
+          "package_name": "com.tkodkonus"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "932424518829-9i5qa89r77gphr3keciu3ed231tfpb9c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAsJJrDyFGja3YEfTqNsjNCNlKZApCFz7Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "932424518829-9i5qa89r77gphr3keciu3ed231tfpb9c.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
