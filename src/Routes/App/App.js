@@ -1,68 +1,81 @@
-import React, {useEffect, useState} from 'react';
+import React, {cloneElement, useEffect, useState} from 'react';
 import {Button} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import auth from '@react-native-firebase/auth';
+import {useDispatch, useSelector} from 'react-redux';
 
 import LoginPage from '../../pages/LoginPage';
 import RegisterPage from '../../pages/RegisterPage';
 import RoomsPage from '../../pages/RoomsPage';
 import ChatPage from '../../pages/ChatPage';
+
 import UserProvider from '../../context/UserContext';
 
 const Stack = createNativeStackNavigator();
 
 function App() {
-  const [currentUserId, setCurrentUserId] = useState(
-    auth().currentUser ? auth().currentUser.id : false,
-  );
-
-  useEffect(() => {
-    setCurrentUserId(auth().currentUser ? auth().currentUser.id : false);
-  }, [currentUserId]);
-
+  const login = useSelector(selector => selector.login);
+  const dispatch = useDispatch();
   return (
-    <UserProvider>
-      <NavigationContainer>
-        <Stack.Navigator
-          screenOptions={({navigation}) => ({
-            headerShow: false,
-            unmountOnBlur: true,
-            headerRight: () => (
-              <Button
-                onPress={() => {
-                  auth().signOut();
-                  navigation.navigate('LoginPage');
-                }}
-                title="Çıkış"
-                color="#000"
-              />
-            ),
-          })}>
-              <Stack.Screen
-                name="LoginPage"
-                component={LoginPage}
-                options={{title: 'User Login'}}
-              />
-              <Stack.Screen
-                name="RegisterPage"
-                component={RegisterPage}
-                options={{title: 'Register'}}
-              />
-                            <Stack.Screen
-                name="RoomsPage"
-                component={RoomsPage}
-                option={{title: 'Chat Rooms'}}
-              />
-              <Stack.Screen
-                name="ChatPage"
-                component={ChatPage}
-                option={{title: 'Chat Room'}}
-              />
-        </Stack.Navigator>
-      </NavigationContainer>
-    </UserProvider>
+    <NavigationContainer>
+      <Stack.Navigator
+        screenOptions={({navigation}) => ({
+          headerShow: false,
+          unmountOnBlur: true,
+          headerRight: () => (
+            <Button
+              onPress={() => {
+                auth().currentUser && auth()
+                  .signOut()
+                  .then(() => dispatch({
+                    type: 'LOGOUT', 
+                    login: false
+                  }))
+                  .catch(err => console.log(err));
+              }}
+              title={auth().currentUser ? 'Çıkış' : 'Login'}
+              color="#000"
+            />
+          ),
+        })}>
+        {!login ? (
+          <>
+            <Stack.Screen
+              name="LoginPage"
+              component={LoginPage}
+              options={{title: 'User Login'}}
+            />
+            <Stack.Screen
+              name="RegisterPage"
+              component={RegisterPage}
+              options={{title: 'Register'}}
+            />
+          </>
+        ) : (
+          <>
+            <Stack.Screen
+              name="RoomsPage"
+              component={RoomsPage}
+              options={{title: 'Chat Rooms'}}
+            />
+            <Stack.Screen
+              name="ChatPage"
+              component={ChatPage}
+              options={{title: 'Chat Room'}}
+            />
+          </>
+        )}
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
 
-export default App;
+function AppWrapper() {
+  return (
+    <UserProvider>
+      <App />
+    </UserProvider>
+  );
+}
+export default AppWrapper;

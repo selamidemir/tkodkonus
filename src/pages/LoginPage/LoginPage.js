@@ -8,11 +8,14 @@ import Input from '../../components/Input';
 import styles from './LoginPage.style';
 import colors from '../../assets/js/colors';
 import auth from '@react-native-firebase/auth';
+import { useDispatch } from 'react-redux';
 
 function LoginPage({navigation}) {
   const [email, setEmail] = useState('jane.doe@example.com');
   const [password, setPassword] = useState('SuperSecretPassword!');
-  const [currentUser, setCurrentUser] = useState(auth().currentUser)
+
+  const dispatch = useDispatch();
+
 
   const handleSingIn = () => {
     if (email.length < 3 && password.length < 5) {
@@ -32,7 +35,17 @@ function LoginPage({navigation}) {
         'jane.doe@example.com',
         'SuperSecretPassword!',
       )
-      .then(res => navigation.navigate('RoomsPage'))
+      .then(res => {
+        console.log("giriş yapıldı");
+        dispatch({
+          type: 'LOGIN',
+          payload: {
+            user: res.user,
+            login: true,
+          }
+        })
+        navigation.navigate('RoomsPage')
+      })
       .catch(err => {
         showMessage({
           message: 'Üye giriş işlemi yapılamadı!',
@@ -54,9 +67,8 @@ function LoginPage({navigation}) {
 
   
   useEffect(() => {
-    setCurrentUser(auth().currentUser);
-    navigation.navigate('ChatPage')
-  }, [auth().currentUser]);
+    
+  }, []);
 
   return (
     <SafeAreaView style={styles.container}>

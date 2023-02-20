@@ -1,67 +1,36 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {createStore} from 'redux';
 import {Provider} from 'react-redux';
 import auth from '@react-native-firebase/auth';
 
+import rooms from '../assets/js/rooms';
+
 const initialValues = {
   user: {},
   login: false,
+  roomList: rooms,
 };
 
 const reducers = (state, action) => {
   const {payload} = action;
   switch (action.type) {
     case 'LOGIN':
-      console.log('giriş işlemi. ', payload.email, payload.password);
-      // auth().signOut();
-      auth().signInWithEmailAndPassword(
-        'jane.doe@example.com',
-        'SuperSecretPassword!',
-      )
-      .then(res => {
-        state =  { ...state, login: true};
-        return state;
-      })
-      .catch(err => {
-        payload.showErrorMessage({
-          message: 'Üye giriş işlemi yapılamadı!',
-          type: 'danger',
-          duration: 4501,
-          icon: 'danger',
-          position: 'top',
-        });
-      })
-      return {...state, login: false};
+      return {
+        ...state, 
+        user: payload.user, 
+        login: payload.login
+      };
       break;
 
     case 'LOGOUT':
+      return {
+        ...state,
+        user: {},
+        login: false,
+      }
       break;
 
     case 'SINGUP':
-      auth()
-        .createUserWithEmailAndPassword(
-          'jane.doe@example.com',
-          'SuperSecretPassword!',
-        )
-        .then(res => {
-          payload.showErrorMessage({
-            message: 'Kayıt işlemi başarılı bir şekilde gerçekleştirildi.',
-            type: 'success',
-            // duration: 4501,
-            icon: 'success',
-            position: 'top',
-          });
-          setTimeout(() => payload.navigation.navigate('LoginPage'), 3555);
-        })
-        .catch(error => {
-          payload.showErrorMessage({
-            message: 'Kayıt işlemi gerçekleştirilemedi!',
-            type: 'danger',
-            duration: 4501,
-            icon: 'danger',
-            position: 'top',
-          });
-        });
       break;
 
     default:
@@ -70,9 +39,18 @@ const reducers = (state, action) => {
   }
 };
 
-function UserProvider({children}) {
-  const [store] = useState(createStore(reducers, initialValues));
+const store = createStore(
+  reducers,
+  auth().currentUser
+    ? {
+        user: auth().currentUser,
+        login: true,
+        roomList: rooms,
+      }
+    : initialValues,
+);
 
+const UserProvider = ({children}) => {
   return <Provider store={store}>{children}</Provider>;
 }
 
