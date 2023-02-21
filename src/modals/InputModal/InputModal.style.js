@@ -12,14 +12,24 @@ export default StyleSheet.create({
     backgroundColor: 'white',
     padding: 10,
     borderRadius: 5,
-    opacity: 1,
+    borderColor: colors.tertiary,
+    borderWidth: 1,
+
+    shadowColor: "#000",
+shadowOffset: {
+	width: 0,
+	height: 9,
+},
+shadowOpacity: 0.48,
+shadowRadius: 11.95,
+
+elevation: 18,
   },
   input: {
     // height: 201,
   },
   close: {
     textAlign: 'right',
-
   },
   name: {
     fontSize: 21,
@@ -27,7 +37,5 @@ export default StyleSheet.create({
     fontWeight: 'bold',
   },
   body: {},
-  button: {
-    
-  },
+  button: {},
 });

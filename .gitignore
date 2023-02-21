@@ -3,6 +3,9 @@
 .DS_Store
 
 isterler.ods
+google-services.json
+android/app/src/main/google-services.json
+/android/app/src/main/google-services.json
 
 # Xcode
 #

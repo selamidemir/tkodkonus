@@ -7,7 +7,7 @@ import FloatingButton from '../../components/FloatingButton';
 import InputModal from '../../modals/InputModal';
 
 import styles from './ChatPage.style';
-import parsMessageData from '../../utils/parsMessageData';
+import parsMessageData from '../../utils/parseMessageData';
 import MessageCard from '../../components/MessageCard';
 
 function ChatPage({route}) {
@@ -39,8 +39,8 @@ function ChatPage({route}) {
     setVisibleInputModal(false);
   };
 
-  const renderMessage = ({item}) => <MessageCard message={item} />
-  
+  const renderMessage = ({item}) => <MessageCard message={item} currentUser={user.uid} />
+
   useEffect(() => {
     databaseRef.on('value', snapshot => {
       const data = snapshot.val();
