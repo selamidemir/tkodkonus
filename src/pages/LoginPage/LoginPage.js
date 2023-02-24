@@ -32,8 +32,7 @@ function LoginPage({navigation}) {
 
     auth()
       .signInWithEmailAndPassword(
-        'jane.doe@example.com',
-        'SuperSecretPassword!',
+        email, password
       )
       .then(res => {
         console.log("giriş yapıldı");

@@ -13,9 +13,9 @@ import colors from '../../assets/js/colors';
 import {useDispatch} from 'react-redux';
 
 function RegisterPage({navigation}) {
-  const [email, setEmail] = useState('gasdf');
-  const [password, setPassword] = useState('1234567');
-  const [repeatPassword, setRepeatPassword] = useState('1234567');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [repeatPassword, setRepeatPassword] = useState('');
 
   const dispatch = useDispatch();
 
@@ -38,14 +38,13 @@ function RegisterPage({navigation}) {
     dispatch({
       type: 'SINGUP',
       payload: {email, password, navigation, showErrorMessage},
-      
     });
     setEmail('');
     setPassword('');
     setRepeatPassword('');
   };
-  
-  const showErrorMessage = (error) => showMessage(error);
+
+  const showErrorMessage = error => showMessage(error);
 
   return (
     <SafeAreaView style={styles.container}>
